@@ -70,4 +70,45 @@ plt.xlabel('Month Number')
 plt.ylabel('Sales in USD ($)')
 plt.show()
 
+#Which city has the higher number of sales
+#Get City and State
+
+def get_state(address):
+    return address.split(',')[2].split(' ')[1]
+
+def get_city(address):
+    return address.split(',')[1]
+
+#all_data['State'] = all_data['Purchase Address'].apply(lambda x: get_state(x))
+#all_data.head()
+all_data['City'] = all_data['Purchase Address'].apply(lambda x: get_city(x) + ' ' + get_state(x))
+all_data.head()
+
+
+#all_data.drop(columns = 'State', inplace = True)
+#all_data.drop(columns = 'City', inplace = True)
+#all_data.head()
+
+
+#Which city has the higher number of sales
+# Plot the above data
+results = all_data.groupby('City').sum()
+results
+
+cities = [city for city, df in all_data.groupby('City')]
+
+plt.bar(cities, results['Sales'])
+plt.xticks(cities, rotation = 'vertical', size = 8)
+plt.xlabel('Cities')
+plt.ylabel('Sales in USD ($)')
+plt.show()
+
+#Best time to advertise a product
+#convert into date time
+all_data['Order Date'] = pd.to_datetime(all_data['Order Date'])
+
+#get hours, minutes
+all_data['Hour'] = all_data['Order Date'].dt.hour
+all_data['Minute'] = all_data['Order Date'].dt.minute
+all_data.head()
 
