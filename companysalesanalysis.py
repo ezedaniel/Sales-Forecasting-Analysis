@@ -112,3 +112,62 @@ all_data['Hour'] = all_data['Order Date'].dt.hour
 all_data['Minute'] = all_data['Order Date'].dt.minute
 all_data.head()
 
+Hours = [hour for hour, df in all_data.groupby('Hour')]
+
+plt.plot(Hours, all_data.groupby(['Hour']).count())
+plt.xticks(Hours)
+plt.xlabel('Hour')
+plt.ylabel('Number of orders')
+plt.grid()
+plt.show()
+
+#Which products are sold together
+#See duplicated order ID
+df = all_data[all_data['Order ID'].duplicated(keep=False)]
+df.head()
+
+#Create a new column with products in sample tuple
+df['Grouped'] = df.groupby('Order ID')['Product'].transform(lambda x: ','.join(x))
+df.head()
+
+
+#Drop dupliate order id
+df = df[['Order ID', 'Grouped']].drop_duplicates()
+df.head()
+
+count = Counter()
+
+for row in df['Grouped']:
+    row_list = row.split(',')
+    count.update(Counter(combinations(row_list, 2)))
+    
+#print(count)
+count.most_common(10)
+
+#Which product has been sold the most?
+product_group = all_data.groupby('Product')
+quantity_ordered = product_group.sum()['Quantity Ordered']
+
+products = [product for product, df in product_group]
+
+plt.bar(products, quantity_ordered)
+plt.xlabel('Product')
+plt.ylabel('Quantity Ordered')
+plt.xticks(products, rotation= 'vertical', size = 8 )
+plt.show()
+
+#Get product prices
+prices = all_data.groupby('Product').mean()['Price Each']
+print(prices)
+
+fig , ax1 = plt.subplots()
+
+ax2 = ax1.twinx()
+ax1.bar(products, quantity_ordered, color = 'g')
+ax2.plot(products,prices, 'b-')
+
+ax1.set_xlabel('Product Name')
+ax2.set_ylabel('Quantity Ordered', color='g')
+ax2.set_ylabel('Price $', color = 'b')
+ax1.set_xticklabels(products, rotation='vertical', size= 8)
+plt.show()
