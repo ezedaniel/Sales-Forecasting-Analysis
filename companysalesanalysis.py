@@ -166,6 +166,9 @@ ax2 = ax1.twinx()
 ax1.bar(products, quantity_ordered, color = 'g')
 ax2.plot(products,prices, 'b-')
 
+
+
+
 ax1.set_xlabel('Product Name')
 ax2.set_ylabel('Quantity Ordered', color='g')
 ax2.set_ylabel('Price $', color = 'b')
