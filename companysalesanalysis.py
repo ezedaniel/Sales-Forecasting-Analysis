@@ -7,7 +7,7 @@ from itertools import combinations
 from collections import Counter
 
 
-df = pd.read_csv("Desktop\SalesAnalysis\Sales_Data\Sales_April_2019.csv")
+df = pd.read_csv ("Desktop\SalesAnalysis\Sales_Data\Sales_April_2019.csv")
 df
 
 
@@ -20,7 +20,7 @@ for file in files:
 #Merging Data
 all_data = pd.DataFrame()
 for file in files:
-        df = pd.read_csv("Desktop/SalesAnalysis/Sales_Data/"+file)
+        df = pd.read_csv ("Desktop/SalesAnalysis/Sales_Data/"+file)
         all_data = pd.concat([all_data, df])
 
 all_data.head()
@@ -30,12 +30,14 @@ all_data.head()
 nan_df = all_data[all_data.isna().any(axis=1)]
 nan_df.head()
 
-all_data = all_data.dropna(how='all')
+all_data = all_data.dropna (how='all')
 all_data.head()
 
 #Find 'Or' and drop
-#temp_df = all_data[all_data['Order Date'].str[0:2] =='Or']
-#temp_df.head() #Shows the rows with errors
+#temp_df = all_data[all_data['Order Date'].str[0:2] =='Or'
+
+#temp_df.head() 
+#Shows the rows with errors
 all_data = all_data[all_data['Order Date'].str[0:2] != 'Or']
 all_data.head() 
 
@@ -60,7 +62,7 @@ all_data.head()
 all_data.groupby('Month').sum()
 
 # Plot the above data
-results = all_data.groupby('Month').sum()
+results = all_data.groupby ('Month').sum()
 months = range(1, 13)
 
 
@@ -105,7 +107,7 @@ plt.show()
 
 #Best time to advertise a product
 #convert into date time
-all_data['Order Date'] = pd.to_datetime(all_data['Order Date'])
+all_data ['Order Date'] = pd.to_datetime(all_data['Order Date'])
 
 #get hours, minutes
 all_data['Hour'] = all_data['Order Date'].dt.hour
@@ -153,7 +155,7 @@ products = [product for product, df in product_group]
 plt.bar(products, quantity_ordered)
 plt.xlabel('Product')
 plt.ylabel('Quantity Ordered')
-plt.xticks(products, rotation= 'vertical', size = 8 )
+plt.xticks (products, rotation= 'vertical', size = 8)
 plt.show()
 
 #Get product prices
@@ -163,7 +165,7 @@ print(prices)
 fig , ax1 = plt.subplots()
 
 ax2 = ax1.twinx()
-ax1.bar(products, quantity_ordered, color = 'g')
+ax1.bar (products, quantity_ordered, color = 'g')
 ax2.plot(products,prices, 'b-')
 
 
